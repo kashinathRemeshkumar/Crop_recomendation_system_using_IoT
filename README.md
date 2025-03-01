@@ -20,7 +20,7 @@ This project utilizes a locally running DNN on the ESP32 to make predictions.
 
 
 
-# Hardware_&_Components
+# [Hardware & Components](#Hardware_&_Components)
 
 #### This project utilizes:-
 
