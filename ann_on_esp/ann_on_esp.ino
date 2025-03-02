@@ -23,9 +23,9 @@ namespace {
 
 
 //////////////////////////////////////////////////////////////////////////
-int button=0;  //reset button pin connect other lead of button to ground
+int button=2;  //reset button pin connect other lead of button to ground
 // Initialize U8g2 for I2C OLED (change constructor if needed)
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock */ 23, /* data */ 22, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock */ 22, /* data */ 21, /* reset=*/ U8X8_PIN_NONE);
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -160,14 +160,8 @@ void loop() {
   u8g2.sendBuffer();
   delay(800);
 
-  u8g2.clearBuffer();
-  u8g2.drawStr(10, 30, "Making Predictions...");
-  u8g2.sendBuffer();
-  delay(800);
 
-  // Keep displaying the prediction until button press
-  while (digitalRead(0) == HIGH) {
-    u8g2.clearBuffer();
+  u8g2.clearBuffer();
     u8g2.drawStr(10, 10, plantNames[maxIndex]);
     u8g2.drawStr(0, 30, "N");
     u8g2.drawStr(50, 30, "P");
@@ -183,7 +177,11 @@ void loop() {
     u8g2.drawStr(100, 40, buffer);
 
     u8g2.sendBuffer();
-    delay(100);
+
+  // Keep displaying the prediction until button press
+  while (digitalRead(2) == HIGH) {
+
+    delay(50);
   }
 
   Serial.println("Button pressed! Ready for new input.");
