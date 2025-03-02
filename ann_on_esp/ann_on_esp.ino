@@ -25,7 +25,7 @@ namespace {
 //////////////////////////////////////////////////////////////////////////
 int button=0;  //reset button pin connect other lead of button to ground
 // Initialize U8g2 for I2C OLED (change constructor if needed)
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock */ 22, /* data */ 21, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock */ 23, /* data */ 22, /* reset=*/ U8X8_PIN_NONE);
 //////////////////////////////////////////////////////////////////////////
 
 
