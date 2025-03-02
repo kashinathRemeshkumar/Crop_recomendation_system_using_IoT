@@ -1,16 +1,14 @@
 #include <Wire.h>
 #include <U8g2lib.h>
-
-// Initialize U8g2 for I2C OLED (change constructor if needed)
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=D5 */ 22, /* data=D6 */ 21, /* reset=*/ U8X8_PIN_NONE);
-
 #include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
 #include "tensorflow/lite/micro/micro_interpreter.h"
 #include "tensorflow/lite/micro/system_setup.h"
 #include "tensorflow/lite/schema/schema_generated.h"
 
+
 #include "crop_model.h"  // Include your TensorFlow Lite model converted to .h
 #include "scalar.h"      // Include file for input scaling
+
 
 // Globals for TensorFlow Lite
 namespace {
@@ -22,6 +20,14 @@ namespace {
   constexpr int kTensorArenaSize = 4096;  // Memory allocation for model
   uint8_t tensor_arena[kTensorArenaSize];
 }  // namespace
+
+
+//////////////////////////////////////////////////////////////////////////
+int button=0;  //reset button pin connect other lead of button to ground
+// Initialize U8g2 for I2C OLED (change constructor if needed)
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock */ 22, /* data */ 21, /* reset=*/ U8X8_PIN_NONE);
+//////////////////////////////////////////////////////////////////////////
+
 
 void setup() {
   Serial.begin(115200);
@@ -71,7 +77,7 @@ void setup() {
     delay(10);
   }
 
-  pinMode(0, INPUT_PULLUP);  // Button setup (internal pull-up)
+  pinMode(button, INPUT_PULLUP);  // Button setup (internal pull-up)
 }
 
 // Scale input values
