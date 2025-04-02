@@ -1,9 +1,23 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#include "html_content.h"
+
 #define BUTTON_PIN D2
+#define ESP_RESET D3
 
-const int m = 22;  // Number of rows
-const int n = 7;   // Number of columns
+const char* ssid = "ESP8266-Access-Point";
+const char* password = "123456789";
+ESP8266WebServer server(80);
 
-// Define a 2D matrix with floating-point values
+String nitrogenValue = "";
+String phosphorusValue = "";
+String potassiumValue = "";
+String humidityValue = "";
+String pHValue = "7.0";
+String rainfallValue = "";
+String temperatureValue = "";
+
+const int m = 22, n = 7;
 float dataMatrix[m][n] = {
     {90,42,43,20.87974371,82.00274423,6.502985292,202.9355362},
     {77,58,19,22.8056033,56.50768935,5.791649933,101.5952794},
@@ -29,14 +43,45 @@ float dataMatrix[m][n] = {
     {104,20,26,27.22783677,52.95261751,7.493191968,175.7260273}
 };
 
+//N	P	K	temperature	humidity	ph	rainfall	label
+
+
+void handleRoot() {
+  server.send(200, "text/html", htmlContent);
+}
+
+void handleSubmit() {
+  nitrogenValue = server.arg("nitrogenValue");
+  phosphorusValue = server.arg("phosphorusValue");
+  potassiumValue = server.arg("potassiumValue");
+  humidityValue = server.arg("humidityValue");
+  pHValue = server.arg("pHValue");
+  rainfallValue = server.arg("rainfallValue");
+  temperatureValue = server.arg("temperatureValue");
+  digitalWrite(ESP_RESET,0);
+  delay(100);
+  digitalWrite(ESP_RESET,1);
+
+  Serial.println(nitrogenValue + "," + phosphorusValue + "," + potassiumValue + "," + temperatureValue + "," + humidityValue +","+ pHValue + "," + rainfallValue);
+  server.send(200, "text/plain", "Data received");
+}
+
 void setup() {
-    Serial.begin(9600);  // TX1 -> ESP32 RX1
-    pinMode(BUTTON_PIN, INPUT_PULLUP);
+  Serial.begin(9600);
+  WiFi.softAP(ssid, password);
+  server.on("/", handleRoot);
+  server.on("/submit", HTTP_POST, handleSubmit);
+  server.begin();
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  pinMode(ESP_RESET,OUTPUT);
 }
 
 void loop() {
-    if (digitalRead(BUTTON_PIN) == LOW) {  // Button Pressed
-        delay(100); // Debounce
+  server.handleClient();
+  if (digitalRead(BUTTON_PIN) == LOW) {  // Button Pressed
+        digitalWrite(ESP_RESET,0);
+        delay(100);
+        digitalWrite(ESP_RESET,1);
         if (digitalRead(BUTTON_PIN) == LOW) { 
             
             int randomRow = random(0, m);  // Select a random row
