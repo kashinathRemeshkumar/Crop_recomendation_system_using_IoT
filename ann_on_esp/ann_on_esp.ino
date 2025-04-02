@@ -23,14 +23,14 @@ namespace {
 
 
 //////////////////////////////////////////////////////////////////////////
-int button=2;  //reset button pin connect other lead of button to ground
+int button=34;  //reset button pin connect other lead of button to ground
 // Initialize U8g2 for I2C OLED (change constructor if needed)
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock */ 22, /* data */ 21, /* reset=*/ U8X8_PIN_NONE);
 //////////////////////////////////////////////////////////////////////////
 
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Starting TensorFlow Lite inference...");
   u8g2.begin();
   u8g2.enableUTF8Print();
@@ -179,7 +179,7 @@ void loop() {
     u8g2.sendBuffer();
 
   // Keep displaying the prediction until button press
-  while (digitalRead(2) == HIGH) {
+  while (digitalRead(34) == HIGH) {
 
     delay(50);
   }
