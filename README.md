@@ -65,6 +65,6 @@ The model predicts the best crop to grow based on current conditions.
 Due to space constraints on the esp32 the model is limited to only 2 hidden layers.
 The dataset used for training the model contains 2000 data entries,
 which is augmented to create around 22000 data points for training the model.
-The model is able to produce an accuracy of around 98.65%
+The model is able to produce an accuracy of around 99.29%
 
 [Dataset](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset)
